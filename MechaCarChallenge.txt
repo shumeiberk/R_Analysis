@@ -1,0 +1,85 @@
+# Challenge analyzing MechaCar's production data
+
+# Develop multiple linear regression that looked at the following metrics of the MechaCar production data
+- vehicle length
+- spoiler angle
+- vehicle weight
+- ground clearance
+
+After applying the regression, the coeficients for vehicle length and ground clearance displayed the greatest impact
+
+> cor(MechaCar_mpg$mpg,MechaCar_mpg$len) #calculate correlation coefficient for length
+[1] 0.6094798 HIGHEST
+> cor(MechaCar_mpg$mpg,MechaCar_mpg$weight) #calculate correlation coefficient for weight
+[1] 0.09068314
+> cor(MechaCar_mpg$mpg,MechaCar_mpg$angle) #calculate correlation coefficient for angle
+[1] -0.02083999
+> cor(MechaCar_mpg$mpg,MechaCar_mpg$clear) #calculate correlation coefficient for clearance
+[1] 0.3287489 2nd HIGHEST
+
+> summary(lm(mpg ~ len + weight + angle + clear, data=MechaCar_mpg)) #summarize linear model
+
+Call:
+lm(formula = mpg ~ len + weight + angle + clear, data = MechaCar_mpg)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-21.3395  -4.1155  -0.2094   6.8789  17.2672 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -1.076e+02  1.576e+01  -6.823 1.87e-08 ***
+len          6.240e+00  6.609e-01   9.441 3.05e-12 ***
+weight       1.277e-03  6.948e-04   1.837   0.0728 .  
+angle        8.031e-02  6.656e-02   1.207   0.2339    
+clear        3.659e+00  5.394e-01   6.784 2.13e-08 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 8.853 on 45 degrees of freedom
+Multiple R-squared:  0.7032,	Adjusted R-squared:  0.6768 
+F-statistic: 26.65 on 4 and 45 DF,  p-value: 2.277e-11
+
+R-Squared is high at 70% and p-value is 2.2 which means that both vehicle length and ground clearance both are good predictors for this model
+The slope of the linear model is not considered to be zero, which indicates high correlation (again R squared being 70+)
+
+
+From the SuspensionCoil Data we can see the following stats summarized:
+summary(SuspensionCoil$PSI) # Stats Summary
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   1463    1497    1500    1500    1501    1536 
+
+   Stats_Labels       Stats_Results
+  <chr>                      <dbl>
+1 min                      1463.  
+2 max                      1536.  
+3 mean                     1500.  
+4 median                   1500.  
+5 variance                   76.2 
+6 standard deviation          8.73
+
+The design specifications for the MechaCar suspension coils dictate that the variance of the suspension coils must not exceed 100 pounds per inch.
+Which is true since the variance is 76.2 which means it meets the standard requirement for pounds per inch.
+The t-test shows that the suspension coil is statistically similar to the sample population of 1500 pounds per inch.
+p value is .34 which is mich higher than the 0.05 which means we cannot reject the null hypothesis.
+
+t.test(sample_table$PSI,mu=mean(SuspensionCoil$PSI)) #compare sample versus population means
+
+	One Sample t-test
+
+data:  sample_table$PSI
+t = 0.96099, df = 49, p-value = 0.3413
+alternative hypothesis: true mean is not equal to 1499.531
+95 percent confidence interval:
+ 1498.745 1501.756
+sample estimates:
+mean of x 
+ 1500.251 
+
+# Design a study that compares the performance of the MechaCar prototype vehicle to other comparable vehicles on the market
+
+We can do trial and error with a few models.  For example we can use the ANOVA Test since we want to assess if there is a statistical difference 
+between the distirbution meas between two samples (MecharCar vs comparable vehicles in the general market).
+
+We can break out the variables of interest such as cost, fuel efficeincy, color, model year, size etc so that we can compare the distribution by avg, median, max 
+and min across the MechaCar vs comparable cars. 
